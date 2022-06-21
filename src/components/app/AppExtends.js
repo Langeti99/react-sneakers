@@ -1,25 +1,24 @@
-import React, {Component} from "react";
+import React from "react";
 import Card from "../card";
 import Header from "../header";
 import Drawer from "../drawer";
 
-export default class AppExtends extends Component {  
-  constructor(props){
-    super(props);
-    this.state = {
-      data: [
-        {src: '/img/sneakers/1.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '12 999 грн.'},
-        {src: '/img/sneakers/2.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '8 999 грн.'},
-        {src: '/img/sneakers/3.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '4 999 грн.'},
-        {src: '/img/sneakers/4.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '8 999 грн.'}
-      ]
-    }
+
+const AppExtends = () => {  
+
+  const state = {
+    data: [
+      {src: '/img/sneakers/1.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '12 999 грн.'},
+      {src: '/img/sneakers/2.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '8 999 грн.'},
+      {src: '/img/sneakers/3.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '4 999 грн.'},
+      {src: '/img/sneakers/4.jpg', label: 'Мужские Кроссовки Nike Blazer Mid Suede', price: '8 999 грн.'}
+    ]
   }
-  render(){
-    const {data} = this.state;
+
+    const {data} = state;
     const elements = data.map((item) => {
       const {...itemProps} = item; 
-      return <Card key={item.src} {...itemProps}/>
+      return <Card key={item.src} {...itemProps} onClick={() => console.log(item)}/>
     })
 
 
@@ -43,5 +42,6 @@ export default class AppExtends extends Component {
         </div>
       </div>
     );
-  }
 }
+
+export default AppExtends;
