@@ -1,8 +1,10 @@
+import styles from './App.module.scss';
+console.log(styles);
 import Card from "../card";
 
 function App() {  
   return (
-    <div className="wrapper clear">
+    <div className={`${styles.wrapper} clear`}>
       <div style={{display:'none'}} className="overlay">
         <div className="drawer">
           <div className="d-flex justify-between mb-30">

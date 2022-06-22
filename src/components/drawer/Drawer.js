@@ -1,36 +1,28 @@
 import styles from './Drawer.module.scss';
-console.log(styles)
 
 
-const Drawer = () => {
+const Drawer = ({ onClose , dataCart }) => {
+   console.log(dataCart);
    return (
-      <div style={{display:'none'}} className={styles.overlay}>
+      <div className={styles.overlay}>
          <div className={styles.drawer}>
          <div className="d-flex justify-between mb-30">
             <h2>Корзина</h2>
-            <img className={`${styles.closeBtn} cu-p`} src="/img/close.svg" alt="close" />
+            <img onClick={onClose} className={`${styles.closeBtn} cu-p`} src="/img/close.svg" alt="close" />
          </div>
          
          <div className={styles.items}>            
-            <div className={`d-flex ${styles.cartItem}`}>
-               <div style={{backgroundImage: "url(/img/sneakers/1.jpg)"}} className={styles.cartItemImg}>
+            {dataCart.map(({src, label, price}) => (
+               <div className={`d-flex ${styles.cartItem}`}>
+                  <div style={{backgroundImage: `url(${src})`}} className={styles.cartItemImg}>
+                  </div>
+                  <div className="mr-25">
+                  <p>{label}</p>
+                  <b>{price}</b>
+                  </div>
+                  <img className={styles.closeBtn} src="/img/close.svg" alt="close" />
                </div>
-               <div className="mr-25">
-               <p>Мужские Кроссовки Nike Air Max 270</p>
-               <b>12 333 грн.</b>
-               </div>
-               <img className={styles.closeBtn} src="/img/close.svg" alt="close" />
-            </div>
-
-            <div className={`d-flex ${styles.cartItem}`}>
-               <div style={{backgroundImage: "url(/img/sneakers/2.jpg)"}} className={styles.cartItemImg}>
-               </div>
-               <div className="mr-25">
-               <p>Мужские Кроссовки Nike Air Max 270</p>
-               <b>8 333 грн.</b>
-               </div>
-               <img className={styles.closeBtn} src="/img/close.svg" alt="close" />
-            </div>
+            ))}
          </div>
 
          <div className={styles.cartTotalBlock}>
