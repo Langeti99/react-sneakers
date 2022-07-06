@@ -21,26 +21,40 @@ const AppExtends = () => {
   const [dataFavorite, setDataFavorite] = React.useState([]); // State для фаворитів
   const [searchValue, setSearchValue] = React.useState(''); // State для пошуку
   const [cartOpened , setCartOpened] = React.useState(false); // State для відображення корзини
+  const [isLoading, setIsLoading] = React.useState(true);
 
   // Запит для карток товару та корзини
   React.useEffect(() => {
     // fetch('https://62b3444ea36f3a973d1f0f28.mockapi.io/items')
     //   .then(res => res.json())
     //   .then(json => setData(json))
+    async function fetchFunction() {
+      const itemsData = await axios.get('https://62b3444ea36f3a973d1f0f28.mockapi.io/items');
+      const itemsCartData = await axios.get('https://62b3444ea36f3a973d1f0f28.mockapi.io/cart');
+      const itemsFavoriteData = await axios.get('https://62b3444ea36f3a973d1f0f28.mockapi.io/favorites');
 
-    axios.get('https://62b3444ea36f3a973d1f0f28.mockapi.io/items')
-      .then( res => setData( res.data ) );
-    axios.get('https://62b3444ea36f3a973d1f0f28.mockapi.io/cart')
-      .then( res => setDataCart( res.data ));
-    axios.get('https://62b3444ea36f3a973d1f0f28.mockapi.io/favorites')
-      .then( res => setDataFavorite( res.data ));
+      setIsLoading(false);
+
+
+
+      setDataCart( itemsCartData.data );
+      setDataFavorite( itemsFavoriteData.data );
+      setData( itemsData.data );
+    }
+
+    fetchFunction();
     
   }, [])
   
   // Добавлення товару в корзину
-  const onAddToCart = (item) => {
-    axios.post('https://62b3444ea36f3a973d1f0f28.mockapi.io/cart', item);
-    setDataCart(res => [...res, item]);
+  const onAddToCart = async (obj) => {
+    if(dataCart.find(item => item.id === obj.id)){
+      axios.delete(`https://62b3444ea36f3a973d1f0f28.mockapi.io/cart/${obj.id}`);
+      setDataCart((prev) => prev.filter((item) => item.id !== obj.id));
+    } else {
+      const {data} = await axios.post('https://62b3444ea36f3a973d1f0f28.mockapi.io/cart', obj);
+      setDataCart(res => [...res, data]);
+    }
   }
 
   // Выдалення товару з корзини
@@ -71,12 +85,9 @@ const AppExtends = () => {
   }
 
   // Відфольтрований масив даних
-  const filteredDataPosts = () => {
-    return data.filter((item) => item.label.toLowerCase().includes(searchValue.toLowerCase()))
-  }
-
-
-  
+  // const filteredDataPosts = () => {
+  //   return data.filter((item) => item.label.toLowerCase().includes(searchValue.toLowerCase()))
+  // }
 
 
   return (
@@ -98,9 +109,12 @@ const AppExtends = () => {
               searchValue={searchValue}
               onChangeSearchValue={onChangeSearchValue}
               setSearchValue={setSearchValue}
-              filteredDataPosts={filteredDataPosts}
+              data={data}
+              // filteredDataPosts={filteredDataPosts}
               onFavorite={onFavorite}
               onAddToCart={onAddToCart} 
+              dataCart={dataCart}
+              isLoading={isLoading}
              />
         }></Route>
       </Routes>

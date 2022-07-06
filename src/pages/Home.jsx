@@ -4,14 +4,43 @@ import Card from '../components/card';
 const Home = ({ searchValue,
    onChangeSearchValue,
    setSearchValue,
-   filteredDataPosts,
+   // filteredDataPosts,
+   data,
    onFavorite,
-   onAddToCart }) => {
+   onAddToCart,
+   dataCart,
+   isLoading }) => {
 
-   const elements = filteredDataPosts().map((item) => {
-      const { ...itemProps } = item;
-      return <Card key={item.src} {...itemProps} onFavorite={() => onFavorite((item))} onAddToCart={() => onAddToCart(item)} />
-   })
+   const renderItems = () => {
+      const filteredPosts = data.filter((item) => item.label.toLowerCase().includes(searchValue.toLowerCase()));
+      // return (isLoading ? [...Array(10)] : filteredPosts)
+      return (isLoading ? [...Array(8).fill(<Card loading={isLoading} />)] : filteredPosts)
+         .map((item) => {
+            console.log(item);
+            // const { ...itemProps } = item;
+            return <Card
+               key={item.src}
+               // {...itemProps}
+               price={item.price}
+               src={item.src}
+               label={item.label}
+               onFavorite={() => onFavorite((item))}
+               onAddToCart={() => onAddToCart(item)}
+               added={dataCart.some(el => el.id === item.id)}
+               loading={isLoading} />
+         })
+   }
+
+   // const elements = data.filter((item) => item.label.toLowerCase().includes(searchValue.toLowerCase())).map((item) => {
+   //    const { ...itemProps } = item;
+   //    return <Card
+   //       key={item.src}
+   //       {...itemProps}
+   //       onFavorite={() => onFavorite((item))}
+   //       onAddToCart={() => onAddToCart(item)}
+   //       added={dataCart.some(el => el.id === item.id)}
+   //       loading={isLoading} />
+   // })
 
    return (
       <div className={`${styles.content} p-40`}>
@@ -25,7 +54,7 @@ const Home = ({ searchValue,
          </div>
 
          <div className={`${styles.mainContent} d-flex `}>
-            {elements}
+            {renderItems()}
          </div>
       </div>
    )

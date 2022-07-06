@@ -10,7 +10,7 @@ const Favorite = ({ dataFavorite, onFavorite, onAddToCart }) => {
 
    const elements = dataFavorite.map((item) => {
       const { ...itemProps } = item;
-      return <Card key={item.src} {...itemProps} onFavorite={() => onFavorite((item))} onAddToCart={() => onAddToCart(item)} favorited={true} />
+      return <Card key={item.src} {...itemProps} onFavorite={() => onFavorite((item))} onAddToCart={() => onAddToCart(item)} favorited />
    })
 
    return (
